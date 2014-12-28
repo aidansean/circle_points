@@ -1,35 +1,15 @@
 from project_module import project_object, image_object, link_object, challenge_object
 
-p = project_object('apollo', 'Apollonian gasket generator')
+p = project_object('apollo', 'Circle from three points')
 p.domain = 'http://www.aidansean.com/'
-p.path = 'apollo'
+p.path = 'circle_points'
 p.preview_image_ = image_object('http://placekitten.com.s3.amazonaws.com/homepage-samples/408/287.jpg', 408, 287)
-p.github_repo_name = 'apollonian'
+p.github_repo_name = 'circle_points'
 p.mathjax = True
-p.links.append(link_object(p.domain, 'apollo/', 'Live page 1'))
-p.links.append(link_object(p.domain, 'apollo/index2.php', 'Live page 2'))
-p.introduction = 'One of my hobbies is creating fractals and one of the most interesting is the Apollonian gasket.  An area defined by some arcs and straight lines is recursively filled with circles and in all cases (except the trivial case of a single circle) this process recurses infinitely, making counting circles challenging.'
-p.overview = '''Circles and lines are defined in much the same way (with lines having an infinite radius, and vanishing inverse radius) and from this point lines will be referred to as circles.  There is then a relatively straightforward relationship between the position of a circle and the three circles/lines which enclose it.  For three circles \\([c_1,c_2,c_3]\\) that enclose a circle \\(c_4\\), the radii are related by:
+p.links.append(link_object(p.domain, 'circle_points/', 'Live page'))
+p.introduction = 'This project was thrown together rather quickly to solve a geometrical problem: How can you analytically find the circle which passes through three given points?  The construction simply demosntrates that the method works, and it not intended to give any further information to the user.'
+p.overview = '''Finding a circle which passes through \(n\) points is fairly easy to do: simply define a \(\chi^2\) and vary the centre and radius of the circle until the \(\chi^2\) is minimised.  I didn't want to pursue a numerical method because it was to be used in the aDetector project to emulate helix reconstruction, where it could be called hundreds or thousands of times per event.  Instead I opted to take triplets of points and estimate the circle properties from the triplets, hence I need a fast algorithm to find the circle that passes through three points.'''
 
-\\[
-  r_4 = \\frac{r_1r_2r_3}{r_1r_2+r_2r_3+r_3r_1+2\\sqrt{r_1r_2r_3(r_1+r_2+r_3)}}
-\\]
+p.challenges.append(challenge_object('The The main challenge was working through the algebra to find a solution.', 'It took a while to realise that some GCSE level geometry had the answer- a chord bisector is a diameter, so all I had to two was define two chords using the three points, find their perpendicular bisectors, and fint their point of intersection.', 'Resolved'))
 
-where \(r_i\) is the radius of the \(i\)th circle.  The centres of the circles, \((x_i,y_i)\) for the \(i\)th circle, are related by:
-
-\\begin{eqnarray*}
-  A_{12} & = & x_1^2 - x_2^2 + y_1^2 - y_2^2 + (r_2+r_4)(r_2+r_4) - (r_1+r_4)(r_1+r_4) \\\\
-  A_{13} & = & x_1^2 - x_3^2 + y_1^2 - y_3^2 + (r_3+r_4)(r_3+r_4) - (r_1+r_4)(r_1+r_4) \\\\
-  B_{12} & = & 2(x_2-x_1) \\\\
-  B_{13} & = & 2(x_3-x_1) \\\\
-  C_{12} & = & 2(y_2-y_1) \\\\
-  C_{13} & = & 2(y_3-y_1) \\\\
-  x_4    & = &  \\frac{A_{12}C_{13}-A_{13}C_{12}}{B_{13}C_{12}-B_{12}C_{13}} \\\\
-  y_4    & = & -\\frac{A_{12}B_{13}-A_{13}B_{12}}{B_{13}C_{12}-B_{12}C_{13}}
-\\end{eqnarray*}
-
-Three circles used to create a new circle are known as a triplet.  Each time a new circle is created from a triplet this introduces three new "holes" in which additional circles can be added.  The three new triplets associated with these holes are then \\([c_1,c_2,c_4],[c_2,c_3,c_4],[c_3,c_1,c_4]\\).'''
-
-p.challenges.append(challenge_object('The first challenge faced was to correctly reconstruct a new circle from a given triplet.  There is a degenerate case where the centres of the circles in a triplet are collinear and none of the circles contains another circle.  A degenerate collinear triplet can never emerge if the first triplet is not a degenerate collinear triplet.', 'The equations given above always find a new circle for a given triplet.  Degenerate collinear triplets are ignored.', 'Resolved'))
-
-p.challenges.append(challenge_object('As triplets are processed this introduces new triplets.  These can lead to a few problems, including runaway memory and CPU usage, as well as the algorithm never completing one part of the gasket before moving on to another.', 'There is a limit on the number of circles that can be produced.  There is a stack of triplets and new triplets are added to this.  As triplets are processed, they get removed from the stack.  In this way the gasket can be filled uniformly, removing triplets keeps memory usage low, and the limit on the number of circles stops the algorithms before CPU use becomes an issue.  The result is an image where some areas may look sparsely populated.  This algorithm should be revisited to make it more robust.', 'Resolved, to be revisited.'))
+p.challenges.append(challenge_object('Two points which are horizontally aligned lead to infinite gradients.', 'This was not addressed in the algorithm.  Initially I tried to rotate the points to solve the problem, but this seems like a poor solution.  Upon writing this report I realise that only one chord can ever be horizontal, leaving two other non-horizontal chords for use.', 'Solved, not implemented.'))
