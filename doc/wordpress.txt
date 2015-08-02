@@ -1,6 +1,6 @@
 [mathjax]
 
-This project was thrown together rather quickly to solve a geometrical problem: How can you analytically find the circle which passes through three given points?  The construction simply demosntrates that the method works, and it not intended to give any further information to the user.
+This project was thrown together rather quickly to solve a geometrical problem: How can you analytically find the circle which passes through three given points?  The construction simply demonstrates that the method works, and it not intended to give any further information to the user.
 
 <h3>Links</h3>
 
